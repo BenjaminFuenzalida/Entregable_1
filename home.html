@@ -18,7 +18,7 @@
 <link href="bootstrap-5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
-    <link href="CSS/CSS_home.css" rel="stylesheet">
+    <link href="CSS/home.css" rel="stylesheet">
   </head>
   <body>
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
@@ -76,20 +76,20 @@
 <header data-bs-theme="dark">
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Mi cuenta</a>
+      <a class="navbar-brand" href="sign_in.html">Mi cuenta</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/Entregable_1/login_singin.html">Login/Singin</a>
+            <a class="nav-link active" aria-current="page" href="login.html">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="/Entregable_1/Contacto.html">Contactos</a>
+            <a class="nav-link active" href="Contacto.html">Contactos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="/Entregable_1/Carrito_compras.html" style="animation: highlight 2s infinite;">Carro de compras (1)</a>
+            <a class="nav-link active" href="carro_de_compras.html" >Carro de compras (1)</a>
           </li>
 
         </ul>
@@ -146,7 +146,7 @@
         </svg>        
         <h2 class="fw-normal">Videojuegos</h2>
         <p>¿Buscas los mejores juegos? </p>
-        <p><a class="btn btn-secondary" href="#"> Haz click aqui!! &raquo;</a></p>
+        <p><a class="btn btn-secondary" href="pagina_en_mantención.html"> Haz click aqui!! &raquo;</a></p>
       </div><!-- /.col-lg-4 -->
       <div class="col-lg-4">
         <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -155,7 +155,7 @@
         </svg>           
         <h2 class="fw-normal">Figuras</h2>
         <p>¿Buscas ampliar tu coleccion?</p>
-        <p><a class="btn btn-secondary" href="#"> Haz click aqui!!&raquo;</a></p>
+        <p><a class="btn btn-secondary" href="pagina_en_mantención.html"> Haz click aqui!!&raquo;</a></p>
       </div><!-- /.col-lg-4 -->
       <div class="col-lg-4">
         <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -164,7 +164,7 @@
         </svg>  
         <h2 class="fw-normal">Otros...</h2>
         <p>¿Buscas algun regalo u accesorio geek?</p>
-        <p><a class="btn btn-secondary" href="#"> Haz click aqui!! &raquo;</a></p>
+        <p><a class="btn btn-secondary" href="pagina_en_mantención.html"> Haz click aqui!! &raquo;</a></p>
       </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
 
@@ -247,6 +247,22 @@
 
     </div>
 
+    <div class="row featurette">
+      <h1>Search Pokemon Abilities</h1>
+
+      <label for="pokemonName">Enter Pokemon Name:</label>
+      <input type="text" id="pokemonName" placeholder="e.g., Pikachu">
+      <button id="searchButton">Search</button>
+  
+      <h2>Abilities:</h2>
+      <ul id="abilitiesList"></ul>
+
+
+
+
+
+    </div>
+
     <hr class="featurette-divider">
 
     <div class="card">
@@ -269,11 +285,45 @@
 
   <footer class="container">
     <p class="float-end"><a href="#">Volver arriba</a></p>
-    <p>&copy; 2024–2024 Company "Games and Others". &middot; <a href="#">Privacidad</a> &middot; <a href="#">Términos y condiciones</a></p>
+    <p>&copy; 2024–2024 Company "Games and Others". &middot; <a href="pagina_en_mantención.html">Privacidad</a> &middot; <a href="pagina_en_mantención.html">Términos y condiciones</a></p>
   </footer>
 </main>
 <script src="bootstrap-5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  $(document).ready(function() {
+      $('#searchButton').on('click', function() {
+          const pokemonName = $('#pokemonName').val().toLowerCase().trim();
+
+          if (pokemonName === '') {
+              alert('Please enter a Pokemon name.');
+              return;
+          }
+
+          const url = `https://pokeapi.co/api/v2/pokemon-form/132/`;
+
+          $.ajax({
+              url: url,
+              method: 'GET',
+              success: function(data) {
+                  const abilities = data.forms;
+                  const abilitiesList = $('#abilitiesList');
+                  abilitiesList.empty(); 
+
+                  abilities.forEach(function(ability) {
+                      const abilityName = ability.ability.name;
+                      const listItem = $('<li>').text(abilityName);
+                      abilitiesList.append(listItem);
+                  });
+              },
+              error: function() {
+                  alert(`Pokemon not found. Please try again.`);
+              }
+          });
+      });
+  });
+</script>
+
+
 
     </body>
 </html>
->>>>>>> b19a37f8bc103e97223d1d7be3fde3b1cb020ca2
