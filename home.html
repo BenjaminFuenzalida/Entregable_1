@@ -113,7 +113,7 @@
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="imagenes/Zelda_carousel.webp" alt="Pokemon foto" class="img-fluid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+        <img src="imagenes/Zelda_carousel.jpg" alt="Pokemon foto" class="img-fluid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
       
       </div>
       <div class="carousel-item">
@@ -247,23 +247,28 @@
 
     </div>
 
-    <div class="row featurette">
-      <h1>Search Pokemon Abilities</h1>
-
-      <label for="pokemonName">Enter Pokemon Name:</label>
-      <input type="text" id="pokemonName" placeholder="e.g., Pikachu">
-      <button id="searchButton">Search</button>
-  
-      <h2>Abilities:</h2>
-      <ul id="abilitiesList"></ul>
-
-
-
-
-
-    </div>
 
     <hr class="featurette-divider">
+
+
+    <div>
+      <img src="/imagenes/Encuentra-tu-Pokemon-Favorito.png" alt="">
+
+      <br>
+
+      <h2>Información de Pokémon</h2>
+        <form id="searchForm">
+          <form id="searchForm">
+            <input type="text" id="pokemonName" placeholder="Nombre del Pokémon" autocomplete="off">
+            <button type="submit">Buscar</button>
+        </form>
+        <div id="suggestions"></div>
+        <div id="pokemon" class="pokemon">
+            <!-- Los datos del Pokémon se mostrarán aquí -->
+        </div>
+    </div>
+
+    <br>
 
     <div class="card">
         <div class="card-header">
@@ -288,42 +293,113 @@
     <p>&copy; 2024–2024 Company "Games and Others". &middot; <a href="pagina_en_mantención.html">Privacidad</a> &middot; <a href="pagina_en_mantención.html">Términos y condiciones</a></p>
   </footer>
 </main>
-<script src="bootstrap-5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+<style>
+  body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+  }
+  .pokemon {
+      margin: 20px;
+  }
+</style>
+
+
+
 <script>
-  $(document).ready(function() {
-      $('#searchButton').on('click', function() {
-          const pokemonName = $('#pokemonName').val().toLowerCase().trim();
+  let allPokemon = [];
 
-          if (pokemonName === '') {
-              alert('Please enter a Pokemon name.');
-              return;
-          }
-
-          const url = `https://pokeapi.co/api/v2/pokemon-form/132/`;
-
-          $.ajax({
-              url: url,
-              method: 'GET',
-              success: function(data) {
-                  const abilities = data.forms;
-                  const abilitiesList = $('#abilitiesList');
-                  abilitiesList.empty(); 
-
-                  abilities.forEach(function(ability) {
-                      const abilityName = ability.ability.name;
-                      const listItem = $('<li>').text(abilityName);
-                      abilitiesList.append(listItem);
-                  });
-              },
-              error: function() {
-                  alert(`Pokemon not found. Please try again.`);
-              }
-          });
-      });
+  document.getElementById('searchForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Evita que el formulario se envíe de la forma tradicional
+      const pokemonName = document.getElementById('pokemonName').value.toLowerCase();
+      if (pokemonName) {
+          mostrarPokemon(pokemonName);
+          document.getElementById('suggestions').innerHTML = ''; // Limpiar sugerencias
+      } else {
+          alert('Por favor, ingresa un nombre de Pokémon.');
+      }
   });
+
+  document.getElementById('pokemonName').addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      mostrarSugerencias(query);
+  });
+
+  // Función para mostrar sugerencias de Pokémon
+  function mostrarSugerencias(query) {
+      const suggestions = allPokemon.filter(pokemon => pokemon.name.startsWith(query)).slice(0, 10);
+      const suggestionsDiv = document.getElementById('suggestions');
+      suggestionsDiv.innerHTML = '';
+      suggestions.forEach(pokemon => {
+          const div = document.createElement('div');
+          div.textContent = pokemon.name;
+          div.addEventListener('click', function() {
+              document.getElementById('pokemonName').value = pokemon.name;
+              suggestionsDiv.innerHTML = '';
+          });
+          suggestionsDiv.appendChild(div);
+      });
+  }
+
+  // Función para obtener y mostrar los datos de un Pokémon
+  async function mostrarPokemon(pokemonName) {
+      try {
+          const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+          const data = await response.json();
+
+          // Obtener tipos de debilidad
+          const tipoResponse = await fetch(data.types[0].type.url);
+          const tipoData = await tipoResponse.json();
+          const debilidades = tipoData.damage_relations.double_damage_from.map(typeInfo => typeInfo.name).join(', ');
+
+          // Obtener movimientos y daño
+          const movimientos = data.moves.slice(0, 5); // Limitar a 5 movimientos
+          const movimientosInfo = await Promise.all(movimientos.map(async move => {
+              const moveResponse = await fetch(move.move.url);
+              const moveData = await moveResponse.json();
+              return {
+                  name: moveData.name,
+                  power: moveData.power
+              };
+          }));
+
+          const pokemonDiv = document.getElementById('pokemon');
+          pokemonDiv.innerHTML = `
+              <h2>${data.name}</h2>
+              <img src="${data.sprites.front_default}" alt="${data.name}">
+              <p><strong>Altura:</strong> ${data.height}</p>
+              <p><strong>Peso:</strong> ${data.weight}</p>
+              <p><strong>Tipo:</strong> ${data.types.map(typeInfo => typeInfo.type.name).join(', ')}</p>
+              <p><strong>Debilidades:</strong> ${debilidades}</p>
+              <h3>Movimientos</h3>
+              <ul>
+                  ${movimientosInfo.map(move => `<li>${move.name} (Poder: ${move.power !== null ? move.power : 'N/A'})</li>`).join('')}
+              </ul>
+          `;
+      } catch (error) {
+          console.error('Error al obtener los datos:', error);
+          const pokemonDiv = document.getElementById('pokemon');
+          pokemonDiv.innerHTML = '<p>No se pudo encontrar el Pokémon.</p>';
+      }
+  }
+
+  // Función para llenar la lista de todos los Pokémon
+  async function obtenerTodosLosPokemon() {
+      try {
+          const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1000'); // Obtener hasta 1000 Pokémon
+          const data = await response.json();
+          allPokemon = data.results;
+      } catch (error) {
+          console.error('Error al obtener la lista de Pokémon:', error);
+      }
+  }
+
+  // Llamar a la función para obtener todos los Pokémon al cargar la página
+  obtenerTodosLosPokemon();
 </script>
 
-
-
+<script src="bootstrap-5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
