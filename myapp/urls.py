@@ -13,7 +13,10 @@ urlpatterns = [
     path('sign_in/', views.sign_in, name='sign_in'),
     path('logout/', views.signout, name='lougout'),
 
+    path('Productos/', views.Productos, name='Productos'),
+    path('Productos/Crear/', views.Crear_Producto, name='Crear_Producto'),
+    path('Productos/<int:id_Producto>/', views.detalle_Producto, name='detalle_Producto'),
+    path('Productos/<int:id_Producto>/Producto_completado', views.Producto_completado, name='Producto_completado'),
 
-    path('Crear_Producto/', views.Crear_Producto, name='Crear_Producto'),
 
 ]

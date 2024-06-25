@@ -6,6 +6,9 @@ class Producto(models.Model):
     titulo = models.CharField(max_length=100)
     descripcion = models.TextField(blank=True)
     fechaCreada = models.DateTimeField(auto_now_add=True)
-    fechaCompletada = models.DateTimeField(null=True)
+    fechaCompletada = models.DateTimeField(null=True, blank=True)
     important = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__ (self):
+        return self.titulo +' |- Hecho por: ' + self.user.username

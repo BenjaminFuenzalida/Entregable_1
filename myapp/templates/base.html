@@ -96,6 +96,12 @@
           <li>
             <a class="nav-link active" href="/logout">Logout</a>
           </li>
+          <li>
+            <a class="nav-link active" href="/Productos/Crear">Crear producto</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'Productos' %}">Productos</a>
+          </li>
           {% else %}
           <li>
             <a class="navbar-brand" href="{% url 'sign_in' %}">Mi cuenta</a>
@@ -111,9 +117,7 @@
           <li class="nav-item">
             <a class="nav-link active" href="{% url 'carro_de_compras' %}" >Carro de compras</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="{% url 'Crear_Producto' %}">Crear Producto</a>
-          </li>
+
 
         </ul>
         <form class="d-flex" role="search">

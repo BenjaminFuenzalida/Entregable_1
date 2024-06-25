@@ -4,8 +4,8 @@
 
 {% load static %}
 <h1>Sign Up</h1>
-
-{{error}}
+<div class="center">
+    {{error}}
 <form method="post">
     {% csrf_token %}
     {{form.as_p}}
@@ -14,6 +14,8 @@
         Signup
     </button>
 </form>
+</div>
+
 
 {% endblock %}
 
