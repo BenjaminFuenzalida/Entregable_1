@@ -102,6 +102,9 @@
           <li class="nav-item">
             <a class="nav-link active" href="{% url 'Productos' %}">Productos</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'carro_de_compras' %}" >Carro de compras</a>
+          </li>
           {% else %}
           <li>
             <a class="navbar-brand" href="{% url 'sign_in' %}">Mi cuenta</a>
@@ -114,9 +117,7 @@
           <li class="nav-item">
             <a class="nav-link active" href="{% url 'contacto' %}">Contactos</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="{% url 'carro_de_compras' %}" >Carro de compras</a>
-          </li>
+
 
 
         </ul>

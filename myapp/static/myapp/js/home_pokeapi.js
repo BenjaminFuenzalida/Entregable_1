@@ -18,7 +18,7 @@ $(document).ready(function() {
             success: function(data) {
                 const abilities = data.abilities;
                 const abilitiesList = $('#abilitiesList');
-                abilitiesList.empty(); // Limpia la lista 
+                abilitiesList.empty(); 
 
                 abilities.forEach(function(ability,await) {
                     const abilityName = ability.ability.name;
@@ -26,7 +26,7 @@ $(document).ready(function() {
                     abilitiesList.append(listItem);   
                 });
 
-                // Obtiene y muestra la imagen
+                
                 const imageUrl = data.sprites.other['official-artwork'].front_default;
                 $('#pokemonImage').attr('src', imageUrl);
             },
@@ -42,21 +42,21 @@ $(document).ready(function() {
 
         });
 
-            //Funcion para mostrar el nombre del pokemom
+            
         $.ajax({
             url: url,
             method: 'GET',
             success: function(data) {
                 const name = data.name;
                 const pokemonDiv = $('#pokemonDiv');
-                pokemonDiv.empty(); // Limpiar contenido previo
+                pokemonDiv.empty(); 
 
                 const nameElement = $('<H2>').text(`${name}!!`);
                 pokemonDiv.append(nameElement);
             },
             error: function() {
                 const pokemonDiv = $('#pokemonDiv');
-                pokemonDiv.empty(); // Limpiar contenido previo
+                pokemonDiv.empty(); 
                 const errorElement = $('<p>').text('No se pudo encontrar el Pokémon.');
                 pokemonDiv.append(errorElement);
             }
@@ -70,10 +70,10 @@ $(document).ready(function() {
     });
         function limpiarBusqueda() {
             const imagen = 
-            $('#pokemonName').val(''); // Limpiar el campo de entrada
-            $('#abilitiesList').empty(); // Limpiar Habilidades
-            $('#pokemonDiv').empty(); // Limpiar el contenido mostrado del nombre
-            $('#pokemonImage').attr('src', '/static/myapp/images/pokemon-3418266_640.png') // Limpia y devuelve la imagen predeterminada
+            $('#pokemonName').val(''); 
+            $('#abilitiesList').empty();
+            $('#pokemonDiv').empty(); 
+            $('#pokemonImage').attr('src', '/static/myapp/images/pokemon-3418266_640.png') 
             .css({
                 'width': '400px',
                 'height': '400px',
@@ -83,7 +83,7 @@ $(document).ready(function() {
 
     });
 
-// Funcion para mostrar sugerencias de Pokemon
+
 function mostrarSugerencias(query) {
     const suggestions = allPokemon.filter(pokemon => pokemon.name.startsWith(query)).slice(0, 10);
     const suggestionsDiv = document.getElementById('suggestions');
@@ -111,11 +111,9 @@ document.getElementById('pokemonName').addEventListener('input', function() {
 
 
 
-
-// Función para llenar la lista de todos los Pokemon
 async function obtenerTodosLosPokemon() {
     try {
-        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1000'); // Obtener hasta 1000 Pokemon
+        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1000'); 
         const data = await response.json();
         allPokemon = data.results;
     } catch (error) {
@@ -123,5 +121,5 @@ async function obtenerTodosLosPokemon() {
     }
 }
 
-// Llamar a la funcion para obtener todos los Pokemon al cargar la pagina
+
 obtenerTodosLosPokemon();

@@ -1,5 +1,9 @@
-<!doctype html>
-<html lang="en" data-bs-theme="auto">
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
     {% load static %}
 
   <head><script src="{% static 'myapp/bootstrap/site/static/docs/5.3/assets/js/color-modes.js' %}"></script>
@@ -95,10 +99,12 @@
 
     </div>
     <button class="btn btn-primary w-100 py-2" type="submit" style="margin-top: 10px;">Enviar</button>
-    <p class="mt-5 mb-3 text-body-secondary">&copy; 2024–2024</p>
+    
   </form>
 </main>
 <script src="{% static 'myapp/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
 
     </body>
 </html>
+
+{% endblock %}

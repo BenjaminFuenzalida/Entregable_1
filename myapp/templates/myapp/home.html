@@ -1,10 +1,6 @@
-
 {% extends 'base.html' %}
 {% block content %}
 
-
-
-   
 {% load static %}
 <main>
 
@@ -17,15 +13,12 @@
     <div class="carousel-inner">
       <div class="carousel-item active">
         <img src="{% static 'myapp/images/Zelda_carousel.jpg' %}" alt="Pokemon foto" class="img-fluid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-      
       </div>
       <div class="carousel-item">
         <img src="{% static 'myapp/images/Magic_carousel.png' %}" alt="Pokemon foto" class="img-fluid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-
       </div>
       <div class="carousel-item">
         <img src="{% static 'myapp/images/carouser_dinosaur.jpg'%}" alt="Pokemon foto" class="img-fluid" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-
       </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
@@ -57,7 +50,7 @@
             <image href="{% static 'myapp/images/logo_figura_redonda.jpg'%}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
         </svg>           
         <h2 class="fw-normal">Figuras</h2>
-        <p>¿Buscas ampliar tu coleccion?</p>
+        <p>¿Buscas ampliar tu colección?</p>
         <p><a class="btn btn-secondary" href="{% url 'pagina_en_mantencion' %}"> Haz click aqui!!&raquo;</a></p>
       </div>
       <div class="col-lg-4">
@@ -66,12 +59,10 @@
             <image href="{% static 'myapp/images/logo_otros_redonda.jpg' %}" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
         </svg>  
         <h2 class="fw-normal">Otros...</h2>
-        <p>¿Buscas algun regalo u accesorio geek?</p>
+        <p>¿Buscas algún regalo u accesorio geek?</p>
         <p><a class="btn btn-secondary" href="{% url 'pagina_en_mantencion' %}"> Haz click aqui!! &raquo;</a></p>
       </div>
     </div>
-
-
 
     <hr class="featurette-divider">
 
@@ -83,9 +74,10 @@
             entre Mario, Bowser y Peach con Mallow y Geno, el par de personajes originales de este juego. Descubre o regresa a este mundo de 
             aliados inusuales y personajes extravagantes en un juego de rol para todos.</p>
         <div class="d-flex gap-2">
-            <button class="btn btn-primary" type="button" style="flex: 1;">Agregar al carrito</button>
-            <button class="btn btn-secondary" type="button" style="flex: 1;">Ver más información</button>
-          </div>
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMario" aria-controls="offcanvasMario" style="flex: 1;">Agregar al carrito</button>
+            <a href="{% url 'pagina_en_mantencion' %}" class="btn btn-secondary" style="flex: 1;">Ver más información</a>
+
+        </div>
       </div>
       <div class="col-md-5">
         <img src="{% static 'myapp/images/mario_descuento_logo.jpeg'%}" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" alt="500x500">     
@@ -95,41 +87,19 @@
     <hr class="featurette-divider">
 
     <div class="row featurette">
-        <div class="col-md-7 order-md-2">
-          <h2 class="featurette-heading fw-normal lh-1">TAZA DE CUPHEAD</h2>
-          <p class="lead">JUST FUNKY taza oficial de cuphead. Acabado Gran Taza/Capa de Café de Cerámica con 
-            Revestimiento/Paja Moldeada, Color Blanco, 20 OZ</p>
-          <div class="d-flex gap-2">
-            <button class="btn btn-primary" type="button" style="flex: 1;">Agregar al carrito</button>
-            <button class="btn btn-secondary" type="button" style="flex: 1;">Ver más información</button>
-          </div>
-        </div>
-        <div class="col-md-5 order-md-1">
-          <img src="{% static 'myapp/images/cuphead_descuento_logo.jpg'%}" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" alt="500x500">      
-        </div>
-
-      </div>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-        Entra y encontraras una sorpresa O.O
-      </button>
-
-      <!-- Modal -->
-      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="staticBackdropLabel">Codigo de descuento</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              Usa el codigo "EXCELSIOR" y obtendras un descuento de $5000 al momento de comprar tu taza de cuphead.
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-          </div>
+      <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading fw-normal lh-1">TAZA DE CUPHEAD</h2>
+        <p class="lead">JUST FUNKY taza oficial de cuphead. Acabado Gran Taza/Capa de Café de Cerámica con 
+          Revestimiento/Paja Moldeada, Color Blanco, 20 OZ</p>
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCuphead" aria-controls="offcanvasCuphead" style="flex: 1;">Agregar al carrito</button>
+          <a href="{% url 'pagina_en_mantencion' %}" class="btn btn-secondary" style="flex: 1;">Ver más información</a>
         </div>
       </div>
+      <div class="col-md-5 order-md-1">
+        <img src="{% static 'myapp/images/cuphead_descuento_logo.jpg'%}" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" alt="500x500">      
+      </div>
+    </div>
 
     <hr class="featurette-divider">
 
@@ -140,21 +110,17 @@
             Naruto Uzumaki! Se sabe que los diseños de Nendoroid hacen que los personajes se vean más jóvenes de lo normal, ¡pero la 
             expresión confiada del Naruto adulto ha sido capturada fielmente en el lindo tamaño de Nendoroid!</p>
         <div class="d-flex gap-2">
-            <button class="btn btn-primary" type="button" style="flex: 1;">Agregar al carrito</button>
-            <button class="btn btn-secondary" type="button" style="flex: 1;">Ver más información</button>
-          </div>
+          <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNaruto" aria-controls="offcanvasNaruto" style="flex: 1;">Agregar al carrito</button>
+          <a href="{% url 'pagina_en_mantencion' %}" class="btn btn-secondary" style="flex: 1;">Ver más información</a>
+        </div>
       </div>
       <div class="col-md-5">
         <img src="{% static 'myapp/images/naruto_descuento_logo.jpg'%}" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" alt="500x500">             
       </div>
-
     </div>
 
     <hr class="featurette-divider">
 
-
-
-    
     <div class="col-md-5">
       <img src="{% static 'myapp/images/Encuentra-tu-Pokemon-Favorito.png' %}">
     </div>
@@ -170,37 +136,67 @@
         
       </div>
       <div id="suggestions"></div>
-            <h2>IS..</h2>
-            <div id="pokemonDiv" class="mt-5"></div>
+      <h2>IS..</h2>
+      <div id="pokemonDiv" class="mt-5"></div>
 
       <div id="pokemonImageContainer">
-          <img id="pokemonImage"  style="width: 400px; height: 400px; object-fit: cover;" src="{% static 'myapp/images/pokemon-3418266_640.png' %}" alt="Imagen del Pokémon" >
+        <img id="pokemonImage" style="width: 400px; height: 400px; object-fit: cover;" src="{% static 'myapp/images/pokemon-3418266_640.png' %}" alt="Imagen del Pokémon">
       </div>
       <br>
       <h2>Habilidades:</h2>
-        <ul id="abilitiesList"></ul>
+      <ul id="abilitiesList"></ul>
+    </div>
 
-      
-
-
-
-
-
-  </div>
-
-
-    <!-- Modal de error -->
+    
     <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
       <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="errorModalLabel">Error</h5>
-              </div>
-              <div class="modal-body" id="errorMessage"> </div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="errorModalLabel">Error</h5>
           </div>
+          <div class="modal-body" id="errorMessage"> </div>
+        </div>
       </div>
+    </div>
+
   </div>
 
 
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMario" aria-labelledby="offcanvasMarioLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasMarioLabel">Carrito de Compras</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      
+      Mario RPG.
+    </div>
+  </div>
+
+  
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCuphead" aria-labelledby="offcanvasCupheadLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasCupheadLabel">Carrito de Compras</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      
+      Taza de Cuphead.
+    </div>
+  </div>
+
+  
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNaruto" aria-labelledby="offcanvasNarutoLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasNarutoLabel">Carrito de Compras</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      
+      Nendoroid Naruto.
+    </div>
+  </div>
+
+</main>
 
 {% endblock %}
