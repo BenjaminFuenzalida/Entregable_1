@@ -1,30 +1,29 @@
 {% extends 'base.html' %}
-{% block content %}
-    <h1>productos</h1>
+{% load static %}
 
-    <div>
-        <ul>
-            <div>
+{% block content %}
+<div class="container">
+    <h1 class="text-center">Productos</h1>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <ul class="list-group">
                 {% for Producto in Productos %}
-                <li>
+                <li class="list-group-item">
                     <a href="{% url 'detalle_Producto' Producto.id %}">
                         {% if Producto.important %}
-                        <strong>{{Producto.titulo}}</strong>
-                    {% else %}
-                        {{Producto.titulo}}
-                    {% endif %}
-
-                    <p>{{Producto.descripcion}}</p>
-                    <p>{{Producto.user.username}}</p>
-                    <p>{{Producto.precio}}</p>
-
+                        <strong>{{ Producto.titulo }}</strong>
+                        {% else %}
+                        {{ Producto.titulo }}
+                        {% endif %}
+                        <p>{{ Producto.descripcion }}</p>
+                        <p>{{ Producto.user.username }}</p>
+                        <p>{{Producto.precio}}</p>
                     </a>
                 </li>
                 {% endfor %}
-            </div>
-        </ul>
+            </ul>
+        </div>
     </div>
-
-
-
+</div>
 {% endblock %}

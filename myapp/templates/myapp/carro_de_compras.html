@@ -2,35 +2,53 @@
 
 {% block content %}
 <br>
+<div class="container">
   <h2>Tu carrito</h2>
   {% if items %}
-    <table>
-      <tr>
-        <th>Producto</th>
-        <th>Precio</th>
-        <th>Cantidad</th>
-        <th>Total</th>
-      </tr>
-      {% for item in items %}
-        <tr>
-          <td>{{ item.product.titulo }}</td>
-          <td>${{ item.product.precio }}</td>
-          <td>
-            <form method="POST" action="{% url 'actualiza_carrito' item.id %}">
-              {% csrf_token %}
-              <input type="number" name="cantidad_item" value="{{ item.cantidad_item }}" min="1">
-              <button type="submit">Actualizar</button>
-            </form>
-          </td>
-          <td>${{ item.total }}</td>
-          <td>
-            <a href="{% url 'eliminar_del_carrito' item.id %}">Eliminar</a>
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
-    <p>Total del carrito: ${{ total }}</p>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Producto</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Total</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+            <tr>
+              <td>{{ item.product.titulo }}</td>
+              <td>${{ item.product.precio }}</td>
+              <td>
+                <form method="POST" action="{% url 'actualiza_carrito' item.id %}">
+                  {% csrf_token %}
+                  <div class="input-group">
+                    <input type="number" class="form-control" name="cantidad_item" value="{{ item.cantidad_item }}" min="1">
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                  </div>
+                </form>
+              </td>
+              <td>${{ item.total }}</td>
+              <td>
+                <a href="{% url 'eliminar_del_carrito' item.id %}" class="btn btn-danger">Eliminar</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-info" role="alert">
+      <strong>Total del carrito:</strong> ${{ total }}
+    </div>
+    <div class="text-right">
+      <a href="{% url 'proceso_de_compras' %}" class="btn btn-success">Proceder a la compra</a>
+    </div>
   {% else %}
-    <p>Tu carrito está vacío</p>
+    <div class="alert alert-warning" role="alert">
+      Tu carrito está vacío
+    </div>
   {% endif %}
+</div>
 {% endblock %}
