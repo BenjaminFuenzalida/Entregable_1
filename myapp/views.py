@@ -4,25 +4,25 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.db import IntegrityError
 from .forms import ProductoForm
-from .models import Producto
-from django.utils import timezone
+from .models import Producto, Carrito, producto_item
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+
+def is_superuser (user):
+    return user.is_superuser
 
 def home(request):
     return render(request, 'myapp/home.html')
 
-
 def contacto(request):
     return render(request, 'myapp/contacto.html')
-
-def carro_de_compras(request):
-    return render(request, 'myapp/carro_de_compras.html')
 
 def pagina_en_mantencion(request):
     return render(request, 'myapp/pagina_en_mantencion.html')
 
-def proceso_de_compras(request):
-    return render(request, 'myapp/proceso_de_compras.html')
 
+
+#------------- Session --------------------#
 
 def sign_up(request):
 
@@ -69,8 +69,17 @@ def sign_in(request):
         else:
             login(request, user)
             return redirect('home')
+        
+@login_required
+def signout(request):
+    logout(request)
+    return redirect('home')
 
 
+#------------- Gestionar productos (SuperUser) -------------#
+
+@login_required
+@user_passes_test(is_superuser)
 def Crear_Producto(request):
     if request.method == 'GET':
         return render(request,'myapp/Crear_Productos.html',{
@@ -89,12 +98,16 @@ def Crear_Producto(request):
             'error': 'Por Favor proporciona datos validos'
     })
 
-
+@login_required
+@user_passes_test(is_superuser)
 def Productos(request):
     Productos = Producto.objects.all()
     return render(request,'myapp/Productos.html',{'Productos': Productos})
 
 
+
+@login_required
+@user_passes_test(is_superuser)
 def detalle_Producto(request, id_Producto):
     if request.method == 'GET':
         producto = get_object_or_404(Producto, pk=id_Producto)
@@ -116,15 +129,68 @@ def detalle_Producto(request, id_Producto):
                             'error': ' Error al actualizar producto'
                             })
 
-def Producto_completado (request, id_Producto):
-    productos = get_object_or_404(Producto, pk=id_Producto, user=request.user)
+@login_required
+@user_passes_test(is_superuser)
+def eliminar_Producto (request, id_Producto):
+    productos = get_object_or_404(Producto, pk=id_Producto)
     if request.method == 'POST':
-        productos.fechaCompletada = timezone.now()
-        productos.save()
+        productos.delete()
         return redirect('Productos')
 
 
-def signout(request):
-    logout(request)
-    return redirect('home')
 
+
+#------------- Carrito de compras --------------------#
+@login_required
+def get_or_create_Carrito(request):
+    if request.user.is_authenticated:
+        carr, _ = Carrito.objects.get_or_create(user=request.user)
+    else:
+        carr_id = request.session.get('carr_id')
+        if carr_id:
+            carr = Carrito.objects.get(id=carr_id)
+        else:
+            carr = Carrito.objects.create()
+            request.session['carr_id'] = carr.id
+    return carr
+
+@login_required
+def carro_de_compras(request):
+    carr = get_or_create_Carrito(request)
+    items = producto_item.objects.filter(carr=carr)
+    total = sum(item.total for item in items)
+    return render(request, 'myapp/carro_de_compras.html', {'items':items, 'total':total})
+
+@login_required
+def agregar_al_carrito(request, product_id):
+    carr = get_or_create_Carrito(request)
+    product = get_object_or_404(Producto, id=product_id)
+    carr_item, created = producto_item.objects.get_or_create(carr=carr, product=product)
+    
+    if not created:
+        carr_item.cantidad_item += 1
+        carr_item.save()
+    
+    return redirect('carro_de_compras')
+
+@login_required
+def eliminar_del_carrito(request, item_id):
+    item = get_object_or_404(producto_item, id=item_id)
+    item.delete()
+    return redirect('carro_de_compras')
+
+@login_required
+def actualiza_carrito(request, item_id):
+    item = get_object_or_404(producto_item, id=item_id)
+    item.cantidad_item = int(request.POST.get('cantidad_item', 1))
+    item.save()
+    return redirect('carro_de_compras')
+
+
+def lista_Productos(request):
+        products = Producto.objects.all()
+        return render(request, 'myapp/lista_Productos.html',{'products':products})
+
+@login_required
+def proceso_de_compras(request):
+    return render(request, 'myapp/proceso_de_compras.html')

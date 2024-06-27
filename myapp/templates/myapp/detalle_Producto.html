@@ -1,26 +1,41 @@
 {% extends 'base.html' %}
 
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
 
-<h1>Detalle del producto</h1>
+    <div>
+        {% block content %}
 
-<h1>{{producto.titulo}}</h1>
+        <h1>Detalle del producto</h1>
+    
+        <h2>{{producto.titulo}}</h2>
+    
+        {{error}}
+    
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button>
+                Actualizar
+            </button>
+        </form>
+    
+        <form action="{% url 'eliminar_Producto' producto.id %}" method="POST">
+            {% csrf_token %}
+            <button>
+                Eliminar
+            </button>
+        </form>
+    
+        {% endblock %}
+    </div>
 
-{{error}}
+</body>
+</html>
 
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button>
-        Actualizar
-    </button>
-</form>
-
-<form action="{% url 'Producto_completado' producto.id %}" method="POST">
-    {% csrf_token %}
-    <button>
-        Completado
-    </button>
-</form>
-
-{% endblock %}

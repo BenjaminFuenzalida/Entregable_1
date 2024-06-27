@@ -15,6 +15,7 @@ def create_miapp():
         db.create_all()
     return miapp
 
+
 miapp = create_miapp()
 
 #database tables

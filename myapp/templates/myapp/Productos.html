@@ -4,20 +4,24 @@
 
     <div>
         <ul>
-            {% for Producto in Productos %}
-            <li>
-                <a href="{% url 'detalle_Producto' Producto.id %}">
-                    {% if Producto.important %}
-                    <strong>{{Producto.titulo}}</strong>
-                {% else %}
-                    {{Producto.titulo}}
-                {% endif %}
+            <div>
+                {% for Producto in Productos %}
+                <li>
+                    <a href="{% url 'detalle_Producto' Producto.id %}">
+                        {% if Producto.important %}
+                        <strong>{{Producto.titulo}}</strong>
+                    {% else %}
+                        {{Producto.titulo}}
+                    {% endif %}
 
-                <p>{{Producto.descripcion}}</p>
-                <p>{{Producto.user.username}}</p>
-                </a>
-            </li>
-            {% endfor %}
+                    <p>{{Producto.descripcion}}</p>
+                    <p>{{Producto.user.username}}</p>
+                    <p>{{Producto.precio}}</p>
+
+                    </a>
+                </li>
+                {% endfor %}
+            </div>
         </ul>
     </div>
 

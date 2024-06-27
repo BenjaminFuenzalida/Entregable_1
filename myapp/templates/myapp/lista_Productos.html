@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Lista de Productos</h2>
+  
+  {% if user.is_superuser %}
+    <a href="{% url 'Crear_Producto' %}">Crear nuevo producto</a>
+  {% endif %}
+  
+  <ul>
+    {% for Producto in products %}
+      <li>
+        {{Producto.titulo}} - ${{Producto.precio}}
+        {% if user.is_superuser %}
+          <a href="{% url 'detalle_Producto' Producto.id %}">Editar</a>
+          <a href="{% url 'eliminar_Producto' Producto.id %}">Eliminar</a>
+        {% else %}
+          <a href="{% url 'agregar_al_carrito' Producto.id %}">Agregar al carrito</a>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>No hay productos disponibles.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

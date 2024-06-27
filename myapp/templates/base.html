@@ -10,6 +10,7 @@
     <meta name="generator" content="Hugo 0.122.0">
     <title>Games and Others</title>
 
+    
     {% load static %}
     <link rel="canonical" href="{% static 'myapp/bootstrap/site/content/docs/5.3/examples/carousel/' %}">
 
@@ -82,7 +83,9 @@
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
 
-        <a class="navbar-brand" href="{% url 'home' %}">Games and Others</a>
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'myapp/images/Games-and-others.png' %}" alt="Games and Others" width="130" height="50">
+        </a>
       
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -96,11 +99,16 @@
           <li>
             <a class="nav-link active" href="/logout">Logout</a>
           </li>
+          {% if user.is_superuser %}
           <li>
             <a class="nav-link active" href="/Productos/Crear">Crear producto</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="{% url 'Productos' %}">Productos</a>
+            <a class="nav-link active" href="{% url 'Productos' %}">Gestionar Productos</a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'lista_Productos' %}" >Productos</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="{% url 'carro_de_compras' %}" >Carro de compras</a>
@@ -131,7 +139,7 @@
   </nav>
 </header>
 
-
+<br>
     {% block content %}
 
     {% endblock %}

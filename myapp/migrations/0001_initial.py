@@ -18,12 +18,13 @@ class Migration(migrations.Migration):
             name='Producto',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('titulo', models.CharField(max_length=100)),
+                ('titulo', models.CharField(max_length=50)),
                 ('descripcion', models.TextField(blank=True)),
                 ('fechaCreada', models.DateTimeField(auto_now_add=True)),
                 ('fechaCompletada', models.DateTimeField(null=True)),
                 ('important', models.BooleanField(default=False)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+
             ],
         ),
     ]
