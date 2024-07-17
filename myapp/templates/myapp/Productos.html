@@ -16,9 +16,10 @@
                         {% else %}
                         {{ Producto.titulo }}
                         {% endif %}
+
                         <p>{{ Producto.descripcion }}</p>
                         <p>{{ Producto.user.username }}</p>
-                        <p>{{Producto.precio}}</p>
+                        <p>{{ Producto.precio_formateado }} CLP</p>
                     </a>
                 </li>
                 {% endfor %}

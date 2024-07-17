@@ -6,7 +6,8 @@ from django.db import IntegrityError
 from .forms import ProductoForm
 from .models import Producto, Carrito, producto_item
 from django.contrib.auth.decorators import login_required, user_passes_test
-
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 def is_superuser (user):
     return user.is_superuser
@@ -25,20 +26,25 @@ def pagina_en_mantencion(request):
 #------------- Session --------------------#
 
 def sign_up(request):
-
     if request.method == 'GET':
         return render(request, 'myapp/sign_up.html', {
         'form' : UserCreationForm
         })
     else:
-        if request.POST['password1'] == request.POST['password2']:
-            #registrar usuario
+        username = request.POST['username']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        if password1 == password2:
             try:
-                user = User.objects.create_user(username=request.POST['username'],
-                                                password=request.POST['password1'])
+                validate_password(password1)
+                user = User.objects.create_user(username=username, password=password1)
                 user.save()
-                login(request, user)
                 return redirect('sign_in')
+            except ValidationError as e:
+                return render(request, 'myapp/sign_up.html', {
+                    'form': UserCreationForm(),
+                    'error': e.messages
+                })
             except IntegrityError:
                 return render(request, 'myapp/sign_up.html', {
                     'form' : UserCreationForm,
@@ -82,21 +88,27 @@ def signout(request):
 @user_passes_test(is_superuser)
 def Crear_Producto(request):
     if request.method == 'GET':
-        return render(request,'myapp/Crear_Productos.html',{
-            'form': ProductoForm
-    })
+        return render(request, 'myapp/Crear_Productos.html', {
+            'form': ProductoForm()
+        })
     else:
         try:
-            form = ProductoForm(request.POST)
-            nuevo_Producto = form.save(commit=False)
-            nuevo_Producto.user = request.user
-            nuevo_Producto.save()
-            return redirect('Productos')
-        except ValueError:
-            return render(request,'myapp/Crear_Productos.html',{
-            'form': ProductoForm,
-            'error': 'Por Favor proporciona datos validos'
-    })
+            form = ProductoForm(request.POST, request.FILES)
+            if form.is_valid():
+                nuevo_Producto = form.save(commit=False)
+                nuevo_Producto.user = request.user
+                nuevo_Producto.save()
+                return redirect('lista_Productos')  
+            else:
+                return render(request, 'myapp/Crear_Productos.html', {
+                    'form': form,
+                    'error': 'Por favor proporciona datos válidos'
+                })
+        except Exception as e:
+            return render(request, 'myapp/Crear_Productos.html', {
+                'form': ProductoForm(),
+                'error': f'Ocurrió un error: {str(e)}'
+            })
 
 @login_required
 @user_passes_test(is_superuser)
@@ -121,7 +133,7 @@ def detalle_Producto(request, id_Producto):
             producto = get_object_or_404(Producto, pk=id_Producto)
             form = ProductoForm(request.POST, instance=producto)
             form.save()
-            return redirect('Productos')
+            return redirect('lista_Productos')
         except ValueError:
             return render(request, 'myapp/detalle_Producto.html',
                            {'producto':producto,
@@ -135,7 +147,7 @@ def eliminar_Producto (request, id_Producto):
     productos = get_object_or_404(Producto, pk=id_Producto)
     if request.method == 'POST':
         productos.delete()
-        return redirect('Productos')
+        return redirect('lista_Productos')
 
 
 
