@@ -13,7 +13,7 @@
         {% block content %}
         <div class="card">
             <div class="card-header">
-                <h1>Detalle del producto</h1>
+                <h1>Editar Producto</h1>
             </div>
             <div class="card-body">
                 <h2 class="card-title">{{ producto.titulo }}</h2>
@@ -22,7 +22,7 @@
                     {{ error }}
                 </div>
                 {% endif %}
-                <form method="POST" class="mb-3">
+                <form method="POST" class="mb-3" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <button type="submit" class="btn btn-primary">Actualizar</button>
