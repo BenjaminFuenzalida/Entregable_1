@@ -118,6 +118,9 @@ def Productos(request):
 
 
 
+
+
+
 @login_required
 @user_passes_test(is_superuser)
 def detalle_Producto(request, id_Producto):
@@ -202,6 +205,10 @@ def actualiza_carrito(request, item_id):
 def lista_Productos(request):
         products = Producto.objects.all()
         return render(request, 'myapp/lista_Productos.html',{'products':products})
+
+def info_Producto(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+    return render(request, 'myapp/info_Producto.html', {'producto': producto})
 
 @login_required
 def proceso_de_compras(request):

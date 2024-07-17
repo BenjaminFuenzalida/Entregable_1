@@ -29,8 +29,10 @@
                 </form>
                 <form action="{% url 'eliminar_Producto' producto.id %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar este producto?')">Eliminar</button>
                 </form>
+                
+                
             </div>
         </div>
         {% endblock %}

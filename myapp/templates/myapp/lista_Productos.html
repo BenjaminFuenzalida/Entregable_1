@@ -31,7 +31,7 @@
     
       <div class="col">
         <div class="card h-100 shadow-sm">
-          <a href="{% url 'detalle_Producto' Producto.id %}" class="text-decoration-none">
+          <a href="{% url 'info_Producto' Producto.id %}" class="text-decoration-none">
             {% if Producto.imagen %}
               <img src="{{ Producto.imagen.url }}" class="card-img-top" alt="{{ Producto.titulo }}">
             {% else %}
@@ -39,7 +39,7 @@
             {% endif %}
           </a>
           <div class="card-body">
-            
+             
             <p class="card-text text-primary fw-bold">{{ Producto.precio_formateado }} CLP</p>
             <p class="card-title text-primary">{{ Producto.titulo }}</p>
           </div>
@@ -50,6 +50,7 @@
                 {% csrf_token %}
                 <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar este producto?');">Eliminar</button>
               </form>
+              <a href="{% url 'agregar_al_carrito' Producto.id %}" class="btn btn-sm btn-primary w-100">Agregar al carrito</a>
             {% else %}
               <a href="{% url 'agregar_al_carrito' Producto.id %}" class="btn btn-sm btn-primary w-100">Agregar al carrito</a>
             {% endif %}
