@@ -24,7 +24,7 @@
                 {% endif %}
                 <form method="POST" class="mb-3" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form.as_p }} 
                     <button type="submit" class="btn btn-primary">Actualizar</button>
                 </form>
                 <form action="{% url 'eliminar_Producto' producto.id %}" method="POST">

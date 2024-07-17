@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.db import IntegrityError
@@ -8,6 +9,8 @@ from .models import Producto, Carrito, producto_item
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+import os
+
 
 def is_superuser (user):
     return user.is_superuser
@@ -57,24 +60,26 @@ def sign_up(request):
 
 
 def sign_in(request):
-    if request.method == 'GET':
-            return render(request, 'myapp/sign_in.html', {
-        'form' : AuthenticationForm
-    })
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        try:
+            if form.is_valid():
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password')
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('home')
+                else:
+                    raise ValidationError('Autenticación fallida')
+            else:
+                raise ValidationError('Formulario inválido')
+        except ValidationError as e:
+            messages.error(request, 'El Usuario o la Contraseña es incorrecto :(')
     else:
-        user = authenticate(
-            request, username=request.POST['username'], password=request.POST
-            ['password']
-        )
-
-        if user is None:
-            return render(request, 'myapp/sign_in.html', {
-            'form' : AuthenticationForm,
-            'error': 'El Usuario o la Contraseña es incorrecto :( '
-        })
-        else:
-            login(request, user)
-            return redirect('home')
+        form = AuthenticationForm()
+    
+    return render(request, 'myapp/sign_in.html', {'form': form})
         
 @login_required
 def signout(request):
@@ -116,11 +121,6 @@ def Productos(request):
     Productos = Producto.objects.all()
     return render(request,'myapp/Productos.html',{'Productos': Productos})
 
-
-
-
-
-
 @login_required
 @user_passes_test(is_superuser)
 def detalle_Producto(request, id_Producto):
@@ -134,7 +134,12 @@ def detalle_Producto(request, id_Producto):
     else:
         try:
             producto = get_object_or_404(Producto, pk=id_Producto)
-            form = ProductoForm(request.POST, instance=producto)
+            form = ProductoForm(request.POST, request.FILES, instance=producto)
+            if form.is_valid():
+                if 'imagen' in request.FILES:
+                    if producto.imagen:
+                        if os.path.isfile(producto.imagen.path):
+                            os.remove(producto.imagen.path)
             form.save()
             return redirect('lista_Productos')
         except ValueError:
@@ -202,6 +207,8 @@ def actualiza_carrito(request, item_id):
     return redirect('carro_de_compras')
 
 
+
+#---------------- Productos --------------------#
 def lista_Productos(request):
         products = Producto.objects.all()
         return render(request, 'myapp/lista_Productos.html',{'products':products})
